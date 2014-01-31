@@ -6,10 +6,15 @@ Creates all needed files for new opencart module.
 I mean this ones:
 
 catalog/controller/module/module_name.php 
+
 catalog/language/english/module/module_name.php
+
 catalog/view/theme/default/template/module/module_name.tpl
+
 admin/controller/module/module_name.php
+
 admin/language/english/module/module_name.php
+
 admin/view/template/module/module_name.tpl
 
 
