@@ -23,8 +23,10 @@ admin/view/template/module/module_name.tpl
 Usage:
 
 * Copy oc-module.php to OpenCart root folder
-* execute from console ```php-cli oc-module.php <module_name>```
-* That's it. Files == created.
+* execute from console 
+* * ```php-cli oc-module.php <module_name>``` in linux
+* * ```php.exe oc-module.php <module_name>``` in windows
+* That's it. Files === created.
 
 ===========================
 
