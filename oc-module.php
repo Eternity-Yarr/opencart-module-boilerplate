@@ -231,10 +231,14 @@ EOT
 ));
 $camelname = str_replace(" ","",ucwords(str_replace("_", " ", MODULE)));
 $error = 0;
-foreach ($files as $file)
-{
+foreach ($files as $file) {
+
 $filename = $file[0];
 echo "Creating file ".$filename;
+if (!file_exists($filename)){
+	$module_dir = substr($filename, 0, strrpos($filename, '/'));
+	mkdir($module_dir, 0777, true);
+}
 if ($fp = fopen($filename,'w+')) {
 	echo " [OK]".PHP_EOL;
 	echo "Writing ... ";
