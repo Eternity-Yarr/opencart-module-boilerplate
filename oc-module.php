@@ -16,28 +16,30 @@ exit(0);
 }
 
 if (
-	(count($argv)!=2)  OR
-	(!ctype_alpha(str_replace("_","",$argv[1]))) OR
-	(!ctype_lower(str_replace("_","",$argv[1])))
-	) usage();
+    (count($argv)!=2)  OR
+    (!ctype_alpha(str_replace("_","",$argv[1]))) OR
+    (!ctype_lower(str_replace("_","",$argv[1])))
+    ) usage();
 
 define('MODULE', $argv[1]);
 
 $files = array(
-	array("catalog/controller/module/".MODULE.".php", 					<<<'EOT'
+    array("catalog/controller/module/".MODULE.".php",                   <<<'EOT'
 <?php
 class ControllerModule%CamelName% extends Controller {
 
-	protected function index() {
+    protected function index() {
 
-		$this->language->loaf('module/%module%');
-		$this->data['heading_title'] = $this->language->get('heading_title');
+        $this->language->loaf('module/%module%');
+        $this->data['heading_title'] = $this->language->get('heading_title');
+        $this->data['button_save']   = $this->language->get('button_save');
+        $this->data['button_cancel'] = $this->language->get('button_cancel');
 
-		/*
+        /*
 
-			Your controller code goes here ...
+            Your controller code goes here ...
 
-		*/
+        */
 
 
         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/%module%.tpl')) {
@@ -45,23 +47,21 @@ class ControllerModule%CamelName% extends Controller {
                 } else {
                         $this->template = 'default/template/module/%module%.tpl';
                 }
-
         $this->render();
-
-	}
+    }
 }
 ?>
 
 EOT
 ),
-	array("catalog/language/english/module/".MODULE.".php", 			<<<'EOT'
+    array("catalog/language/english/module/".MODULE.".php",             <<<'EOT'
 <?php
 // Heading
 $_['heading_title']  = '%CamelName% module heading';
 
 /*
 
-	Your  string constans goes here ...
+    Your  string constans goes here ...
 
 */
 
@@ -69,38 +69,38 @@ $_['heading_title']  = '%CamelName% module heading';
 
 EOT
 ),
-	array("catalog/view/theme/default/template/module/".MODULE.".tpl",  <<<'EOT'
+    array("catalog/view/theme/default/template/module/".MODULE.".tpl",  <<<'EOT'
 <div><?php /* Your module template goes here... */ </div>
 
 EOT
 ),
-	array("admin/controller/module/".MODULE.".php",  					<<<'EOT'
+    array("admin/controller/module/".MODULE.".php",                     <<<'EOT'
 <?php
 class ControllerModule%CamelName% extends Controller {
 
-	public function index() {
+    public function index() {
 
-		$this->language->load('module/%module%');
+        $this->language->load('module/%module%');
 
-		$this->document->setTitle($this->language->get('heading_title'));
+        $this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('setting/setting');
+        $this->load->model('setting/setting');
 
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-		        $this->model_setting_setting->editSetting('%module%', $this->request->post);
-		
-		        $this->session->data['success'] = $this->language->get('text_success');
-		
-		        $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
-		}
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+                $this->model_setting_setting->editSetting('%module%', $this->request->post);
+        
+                $this->session->data['success'] = $this->language->get('text_success');
+        
+                $this->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
+        }
 
-		$this->data['heading_title'] = $this->language->get('heading_title');
+        $this->data['heading_title'] = $this->language->get('heading_title');
 
-		/*
+        /*
 
-			Load additional language constants here ..
+            Load additional language constants here ..
 
-		*/
+        */
 
         if (isset($this->error['warning'])) {
                 $this->data['error_warning'] = $this->error['warning'];
@@ -118,17 +118,20 @@ class ControllerModule%CamelName% extends Controller {
 
         $this->data['breadcrumbs'][] = array(
         'text' => $this->language->get('text_home'),
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
+        'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL'),
+        'separator' => ' :: '
         );
 
         $this->data['breadcrumbs'][] = array(
         'text' => $this->language->get('text_module'),
-                'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL')
+        'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'),
+        'separator' => ' :: '
         );
 
         $this->data['breadcrumbs'][] = array(
         'text' => $this->language->get('heading_title'),
-                'href' => $this->url->link('module/%module%', 'token=' . $this->session->data['token'], 'SSL')
+        'href' => $this->url->link('module/%module%', 'token=' . $this->session->data['token'], 'SSL'),
+        'separator' => ' :: '
         );
                 
         $this->data['action'] = $this->url->link('module/%module%', 'token=' . $this->session->data['token'], 'SSL');
@@ -137,7 +140,7 @@ class ControllerModule%CamelName% extends Controller {
 
         /*
 
-        	 Assign your form variables here ...
+             Assign your form variables here ...
         
         */
 
@@ -152,11 +155,9 @@ class ControllerModule%CamelName% extends Controller {
         );
                 
         $this->response->setOutput($this->render());
+    }
 
-
-	}
-
-	public function validate() {
+    public function validate() {
 
         if (!$this->user->hasPermission('modify', 'module/%module%')) {
                 $this->error['warning'] = $this->language->get('error_permission');
@@ -164,7 +165,7 @@ class ControllerModule%CamelName% extends Controller {
                 
         /*
 
-        	Validate your form here ...
+            Validate your form here ...
 
         */
                 
@@ -173,30 +174,25 @@ class ControllerModule%CamelName% extends Controller {
         } else {
                 return false;
         }
-
-
-	}
-
+    }
 }
-
-
-
 ?>
 
 EOT
 ),
-	array("admin/language/english/module/".MODULE.".php",  				<<<'EOT'
+    array("admin/language/english/module/".MODULE.".php",               <<<'EOT'
 <?php
 // Heading
 $_['heading_title']       = '%CamelName% module title';
 
 // Text
+$_['text_module']     = 'Modules';
 $_['text_success']        = 'Success: You have modified module %CamelName%!';
 
 // Entry
 /*
 
-	Your text entries here ...
+    Your text entries here ...
 
 */
 
@@ -206,7 +202,7 @@ $_['error_permission']    = 'Warning: You do not have permission to modify modul
 
 EOT
 ),
-	array("admin/view/template/module/".MODULE.".tpl",  				<<<'EOT'
+    array("admin/view/template/module/".MODULE.".tpl",                  <<<'EOT'
 <?php echo $header; ?>
 <div id="content">
   <div class="breadcrumb">
@@ -236,28 +232,28 @@ foreach ($files as $file) {
 $filename = $file[0];
 echo "Creating file ".$filename;
 if (!is_writable($filename)){
-	$path_info = pathinfo($filename);
-	$dir = $path_info['dirname'];
-	echo " (and directory ".$dir.") ";
-	mkdir($dir, 0755, true) or trigger_error(PHP_EOL."Cannot write to ".$filename.". Check permissions!", E_USER_ERROR);
+    $path_info = pathinfo($filename);
+    $dir = $path_info['dirname'];
+    echo " (and directory ".$dir.") ";
+    mkdir($dir, 0755, true) or trigger_error(PHP_EOL."Cannot write to ".$filename.". Check permissions!", E_USER_ERROR);
 }
 if ($fp = fopen($filename,'w+')) {
-	echo " [OK]".PHP_EOL;
-	echo "Writing ... ";
-	if (fwrite($fp,
-		str_replace(
-			"%module%", 
-			MODULE, 
-			str_replace(
-				"%CamelName%",
-				$camelname,$file[1]))))
-		echo " [OK]".PHP_EOL;
-	else {
-		$error++;
-		echo " [ERROR]".PHP_EOL;
-	}
-	
-	fclose($fp);
+    echo " [OK]".PHP_EOL;
+    echo "Writing ... ";
+    if (fwrite($fp,
+        str_replace(
+            "%module%", 
+            MODULE, 
+            str_replace(
+                "%CamelName%",
+                $camelname,$file[1]))))
+        echo " [OK]".PHP_EOL;
+    else {
+        $error++;
+        echo " [ERROR]".PHP_EOL;
+    }
+    
+    fclose($fp);
 } else $error++;
 }
 if ($error) echo "Done with $error errors".PHP_EOL;
