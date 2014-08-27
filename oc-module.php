@@ -235,9 +235,11 @@ foreach ($files as $file) {
 
 $filename = $file[0];
 echo "Creating file ".$filename;
-if (!file_exists($filename)){
-	$module_dir = substr($filename, 0, strrpos($filename, '/'));
-	mkdir($module_dir, 0777, true);
+if (!is_writable($filename)){
+	$path_info = pathinfo($filename);
+	$dir = $path_info['dirname'];
+	echo " (and directory ".$dir.") ";
+	mkdir($dir, 0755, true);
 }
 if ($fp = fopen($filename,'w+')) {
 	echo " [OK]".PHP_EOL;
