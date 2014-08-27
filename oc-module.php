@@ -207,7 +207,7 @@ $_['error_permission']    = 'Warning: You do not have permission to modify modul
 EOT
 ),
 	array("admin/view/template/module/".MODULE.".tpl",  				<<<'EOT'
-<php echo $header; ?>
+<?php echo $header; ?>
 <div id="content">
   <div class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
@@ -220,12 +220,12 @@ EOT
   <div class="box">
     <div class="heading">
       <h1><img src="view/image/module.png" alt="" /> <?php echo $heading_title; ?></h1>
-      <div class="buttons"><a onclick="$('#form').submit();" class="button"><?php echo $button_save; ?></a><a href="<?php echo $cancel; ?>" class="button"><?ph
+      <div class="buttons"><a onclick="$('#form').submit();" class="button"><?php echo $button_save; ?></a><a href="<?php echo $cancel; ?>" class="button"><?php echo $button_cancel; ?></a></div>
     </div>
     <div class="content">
     </div>
 </div>
-<php echo $footer;?>
+<?php echo $footer;?>
 
 EOT
 ));
