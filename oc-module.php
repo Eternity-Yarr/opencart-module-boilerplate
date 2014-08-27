@@ -239,7 +239,8 @@ if (!is_writable($filename)){
 	$path_info = pathinfo($filename);
 	$dir = $path_info['dirname'];
 	echo " (and directory ".$dir.") ";
-	mkdir($dir, 0755, true);
+	if (!mkdir($dir, 0755, true))
+	    trigger_error(PHP_EOL."Cannot write to ".$filename.". Check permissions!", E_USER_ERROR);
 }
 if ($fp = fopen($filename,'w+')) {
 	echo " [OK]".PHP_EOL;
